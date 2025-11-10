@@ -1,4 +1,4 @@
-package com.qaima.controller;
+package com.qaima.api.Watchlist;
 
 import com.qaima.common.ApiResponse;
 import com.qaima.dto.WatchlistRequestDto;
