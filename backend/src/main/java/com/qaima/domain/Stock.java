@@ -23,12 +23,15 @@ public class Stock {
     private Long stockId;
 
     // exchange_id bigint [not null, ref: > exchange.exchange_id]
-    // Exchange 엔티티를 만들고 나면 @ManyToOne으로 변경 필요
-    @Column(nullable = false)
-    private Long exchangeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exchange_id", nullable = false)
+    private Exchange exchange;
+    //stockid로 Exchange 조인해서 contry 확인
+    //stock.getExchange().getCountry(); // KR / US 등
+    //stock.getExchange().getCode();
 
     // industry_id bigint [ref: > industry.industry_id]
-    // Industry 엔티티를 만들고 나면 @ManyToOne으로 변경 필요
+    //TODO: Industry 엔티티를 만들고 나면 @ManyToOne으로 변경 필요
     private Long industryId;
 
     @Column(nullable = false, length = 32) // stock_code varchar(32) [not null]
