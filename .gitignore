@@ -219,6 +219,7 @@ __marimo__/
 /backend/logs/
 /backend/tmp/
 /backend/*.iml
+/backend/src/main/resources
 
 # Gradle wrapper caches (keep wrapper jar & scripts)
 !backend/gradle/wrapper/gradle-wrapper.jar
