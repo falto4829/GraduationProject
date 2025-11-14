@@ -7,21 +7,23 @@ import jakarta.persistence.*;
 import java.time.Instant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@Setter
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // bigserial [pk] -> BIGINT AUTO_INCREMENT
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(nullable = false, unique = true, length = 255) // email varchar(255) [not null, unique]
+    @Column(nullable = false, unique = true, length = 255)
     private String email;
 
-    @Column(nullable = false, length = 255) // password_hash varchar(255) [not null]
+    @Column(nullable = false, length = 255)
     private String passwordHash;
 
     @Column(length = 100)
@@ -33,41 +35,43 @@ public class User {
     @Column(length = 20)
     private String experience;
 
+    @Column(length = 6)
+    private String birthdate;
+
     // --- 권한/상태 ---
-    @Enumerated(EnumType.STRING) // Enum -> varchar
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    @ColumnDefault("'user'") // user_role [not null, default: 'user']
+    @ColumnDefault("'user'")
     private UserRole role;
 
     @Column(nullable = false, length = 20)
-    @ColumnDefault("'active'") // status [not null, default: 'active']
+    @ColumnDefault("'active'")
     private String status;
 
-    // 이메일 인증
+    // --- 이메일 인증 ---
     @Column(nullable = false)
-    @ColumnDefault("false") // email_verified bool [not null, default: false]
+    @ColumnDefault("false")
     private boolean emailVerified;
 
-    private Instant emailVerifiedAt; // timestamptz -> Instant (UTC)
+    private Instant emailVerifiedAt;
 
-    // 로그인 보안
+    // --- 로그인 보안 ---
     private Instant lastLoginAt;
     @Column(length = 45)
     private String lastLoginIp;
     private Instant lockedUntil;
 
-    // UI 설정
     @Column(nullable = false)
-    @ColumnDefault("false") // glossary_hover bool [not null, default: false]
+    @ColumnDefault("false")
     private boolean glossaryHover;
 
-    // 타임스탬프
-    @CreationTimestamp // default: 'now()' -> @CreationTimestamp
+
+    @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
-    @UpdateTimestamp // default: 'now()' -> @UpdateTimestamp
+    @UpdateTimestamp
     @Column(nullable = false)
     private Instant updatedAt;
-    
+
 }
