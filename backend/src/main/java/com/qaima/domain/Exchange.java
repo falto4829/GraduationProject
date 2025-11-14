@@ -1,25 +1,30 @@
 package com.qaima.domain;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "exchange")
 @Getter
 @NoArgsConstructor
+@Entity
+@Table(name = "exchange")
+
 public class Exchange {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long exchangeId;
 
-    @Column(nullable = false, unique = true, length = 20)
-    private String code;      // KRX, NASDAQ
+    @Column(length = 20, nullable = false, unique = true)
+    private String code;
 
-    @Column(nullable = false, length = 2)
-    private String country;   // KR, US
-
+    @Column(length = 100, nullable = false)
     private String name;
-    private String timezone;
-}
 
+    @Column(length = 50)
+    private String timezone;
+
+    @Column(length = 2)
+    private String country; // kR, US, JP...
+
+}
