@@ -3,11 +3,13 @@ package com.qaima.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
+@Setter
 @Entity
 @Table(name = "stock", uniqueConstraints = {
         // ERD: (exchange_id, stock_code) [unique]
@@ -16,6 +18,7 @@ import java.time.LocalDate;
                 columnNames = {"exchange_id", "stock_code"}
         )
 })
+        
 public class Stock {
 
     @Id
