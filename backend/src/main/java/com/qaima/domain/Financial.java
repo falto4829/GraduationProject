@@ -3,33 +3,40 @@ package com.qaima.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
+@Setter
 @Entity
-@Table(name = "financial", indexes = {
-        @Index(name = "idx_financials_stock_fiscal_period", columnList = "stock_id, fiscal_year, fiscal_quarter")
-})
-@IdClass(FinancialId.class)
+@Table(name = "financial",
+      uniqueConstraints = {
+    @UniqueConstraint(
+            name = "uk_stock_report_version",
+            columnNames = {"stock_id", "report_date", "version"}
+    )
+},
+indexes = {
+@Index(name = "idx_financials_stock_fiscal_period", columnList = "stock_id, fiscal_year, fiscal_quarter")
+    })
 
 public class Financial {
 
-    // --- 복합 키 ---
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long financialId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id", nullable = false)
     private Stock stock;
 
-    @Id
     @Column(nullable = false)
     private LocalDate reportDate;
 
-    @Id
     @Column(nullable = false, columnDefinition = "int default 1")
     private int version;
-    // --- 복합 키 ---
 
     @Column(nullable = false)
     private int fiscalYear;
@@ -44,7 +51,6 @@ public class Financial {
     private String currency;
     private String source;
 
-    
     @Column(precision = 20, scale = 2)
     private BigDecimal revenue;
 
@@ -78,7 +84,7 @@ public class Financial {
     @Column(precision = 20, scale = 2)
     private BigDecimal marketCap;
 
-    // --- 파생 지표들 ---
+    // --- [파생] 지표 필드들 ---
     @Column(precision = 10, scale = 4)
     private BigDecimal operatingMargin;
 
@@ -93,4 +99,5 @@ public class Financial {
 
     @Column(precision = 10, scale = 4)
     private BigDecimal pbr;
+        
 }
