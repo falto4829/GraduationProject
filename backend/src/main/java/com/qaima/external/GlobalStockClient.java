@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
@@ -27,10 +28,9 @@ public class GlobalStockClient implements StockClient {
         return null;
     }
 
-    //신규 추가: Marketstack 단일 티커 조회
+    // 단일 티커 조회
     @Override
-    public MarketStackTickersResponse.TickerData fetchTickerMeta(String symbol) {
-
+    public Mono<MarketStackTickersResponse.TickerData> fetchTickerMeta(String symbol) {
         return marketstackClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/tickers/{symbol}")
@@ -38,7 +38,20 @@ public class GlobalStockClient implements StockClient {
                         .build(symbol)
                 )
                 .retrieve()
-                .bodyToMono(MarketStackTickersResponse.TickerData.class)
-                .block();
+                .bodyToMono(MarketStackTickersResponse.TickerData.class);
+    }
+
+    // 다중 티커 조회
+    public Mono<MarketStackTickersResponse> fetchTickers() {
+        return this.marketstackClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/tickers") // ('단일'이 아닌 '목록' 주소)
+                        .queryParam("access_key", this.accessKey)
+                        .queryParam("limit", 100) // (테스트용, 100개만)
+                        //.queryParam("exchange", "XKRX,XNAS") // (한국, 나스닥)
+                        .build()
+                )
+                .retrieve() // (요청 실행)
+                .bodyToMono(MarketStackTickersResponse.class); // (응답을 DTO로 변환)
     }
 }
