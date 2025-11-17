@@ -5,6 +5,7 @@ import com.qaima.dto.MarketStackTickersResponse;
 import com.qaima.dto.StockDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
@@ -16,8 +17,13 @@ public class KrStockClient implements StockClient {
     }
 
     @Override
-    public MarketStackTickersResponse.TickerData fetchTickerMeta(String symbol) {
-        return null;
+    public Mono<MarketStackTickersResponse.TickerData> fetchTickerMeta(String symbol) {
+        return Mono.empty();
+    }
+
+    @Override
+    public Mono<MarketStackTickersResponse> fetchTickers() {
+        return Mono.empty();
     }
 }
 
