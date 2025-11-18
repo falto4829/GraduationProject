@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create   # 네가 지금 쓰는 값 그대로
+      ddl-auto: create   #지금 쓰는 값 그대로
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
